@@ -1,0 +1,81 @@
+.ground-type-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: left;
+  align-items: left;
+  flex-direction: column;
+  padding: 20px 100px;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.ground-type-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px 40px;
+  background-color: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 50px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ground-type-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.ground-type-card:hover {
+  border-color: rgb(110, 77, 59);
+  box-shadow: 0 4px 8px rgba(249, 115, 22, 0.2);
+  transform: translateY(-2px);
+}
+
+.ground-type-card.selected {
+  border-color: rgb(110, 77, 59);
+  background-color: #cec1b0;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.ground-type-card input[type="radio"] {
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: rgb(110, 77, 59);
+}
+
+.ground-type-name {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1f2937;
+  user-select: none;
+}
+
+.ground-type-card.selected .ground-type-name {
+  color: rgb(110, 77, 59);
+  font-weight: 600;
+}
+
+.ground-type-description {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  user-select: none;
+  display: block;
+}
+
+.ground-type-card.selected .ground-type-description {
+  color: #4b5563;
+}
+
