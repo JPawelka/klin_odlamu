@@ -46,3 +46,56 @@
   padding: 50px;
   box-sizing: border-box;
 }
+.height-input-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+}
+
+.height-input {
+  width: 30%;
+  font-size: 30px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.calculate-button {
+  padding: 10px 30px;
+  font-size: 30px;
+  background-color: rgb(110, 77, 59);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.calculate-button:hover {
+  background-color: rgb(90, 60, 45);
+}
+.user-button-section {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  padding:10px 20px;
+}
+.safe-distance-label {
+  width: 100%;
+  font-size: 30px;
+  margin: 0;
+  padding: 50px;
+  box-sizing: border-box;
+}
+.safe-distance-value {
+  font-size: 30px;
+  font-weight: bold;
+}
