@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Alert</title>
+    <link rel="stylesheet" href="custom-alert.css">
+</head>
+<body>
+    <div id="custom-alert">
+        <h1 class="custom-alert-title">Za dużo pinezek</h1>
+        <p class="custom-alert-message">Pozostawiamy tylko najnowszą pinezkę</p>
+        <button class="custom-alert-button">Close</button>
+    </div>
+</body>
+<script>
+    const showAlertBtn = document.getElementById('show-alert-btn');
+    const customAlert = document.getElementById('custom-alert');
+    const closeAlertBtn = document.getElementById('close-alert-btn');
+
+    showAlertBtn.addEventListener('click', () => {
+        customAlert.style.display = 'flex';
+    });
+
+    closeAlertBtn.addEventListener('click', () => {
+        customAlert.style.display = 'none';
+    });
+</script>
+</html>

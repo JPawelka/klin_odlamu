@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import CustomAlert from './custom alert/CustomAlert';
 
-// Fix dla domyślnych ikon Leaflet w React
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
@@ -23,6 +23,7 @@ function MapClickHandler({ onMapClick }) {
 export default function InteractiveMap() {
   const [markers, setMarkers] = useState([]);
   const [center] = useState([52.2297, 21.0122]); // Warszawa jako domyślny środek
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleMapClick = (latlng) => {
     const newMarker = {
@@ -38,33 +39,31 @@ export default function InteractiveMap() {
     setMarkers(markers.filter(marker => marker.id !== id));
   };
 
-  const clearAllMarkers = () => {
-    setMarkers([]);
-  };
+
 
   useEffect(() => {
     if (markers.length > 1) {
-      alert('Za dużo pinezek. Pozostawiamy tylko najnowszą.');
+      setShowAlert(true);
       setMarkers([markers[markers.length - 1]]); 
     }
   }, [markers]);
 
+
   return (
     <div className="p-4">
+      {showAlert && (
+        <CustomAlert
+          title="Za dużo pinezek"
+          message="Pozostawiamy tylko najnowszą pinezkę"
+          onClose={() => setShowAlert(false)}
+        />
+      )}
       <div className="mb-4">
         <h1 className="text-2xl font-bold mb-2">Interaktywna Mapa</h1>
         <p className="text-gray-600 mb-3">
           Kliknij na mapę, aby postawić pinezkę i zobaczyć współrzędne
         </p>
         
-        {markers.length > 0 && (
-          <button
-            onClick={clearAllMarkers}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-3"
-          >
-            Wyczyść wszystkie pinezki ({markers.length})
-          </button>
-        )}
       </div>
 
       <div className="border-2 border-gray-300 rounded-lg overflow-hidden shadow-lg mb-4">
@@ -117,7 +116,7 @@ export default function InteractiveMap() {
                 >
                   ✕
                 </button>
-                <button onClick={() =>console.log(marker)} className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
+                <button onClick={() =>console.log(`${marker.lat}, ${marker.lng}`)} className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">
                   Zapisz
                 </button>
               </div>
