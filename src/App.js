@@ -9,6 +9,7 @@ import InteractiveMap from './components/localisation-map';
 function App() {
   const [factorForCalculations, setFactorForCalculations] = useState([]);
   const navigate = useNavigate(); 
+  const [safeDistanceValue, setSafeDistanceValue] = useState(0);
   return (
     <div className="App">
       <header className="App-header">
@@ -28,8 +29,8 @@ function App() {
        <p className="ground-type-label">2. Wysokość klinu</p>
        <div className="height-input-section">
        <input className="height-input" id="height-input"/>
-       <button className="calculate-button" onClick={() => Calculations(document.getElementById('height-input').value, factorForCalculations)
-       }>Oblicz</button>
+       <button className="calculate-button" onClick={() => setSafeDistanceValue(Calculations(document.getElementById('height-input').value, factorForCalculations))}>Oblicz</button>
+       <button onClick={() => console.log(safeDistanceValue)}>Test</button>
        </div>
        <div>
         <p className="ground-type-label">3. Lokalizacja</p>
@@ -38,7 +39,7 @@ function App() {
        <div>
         <p className="ground-type-label">4. Wynik</p>
        </div>
-       <div className="safe-distance-label">Bezpieczna odległość dla twojej maszyny: <span className="safe-distance-value">10 metrów</span>
+       <div className="safe-distance-label">Bezpieczna odległość dla twojej maszyny: <span className="safe-distance-value">{safeDistanceValue} metrów</span>
        </div>
       
      
