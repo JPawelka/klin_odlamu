@@ -20,7 +20,7 @@ function MapClickHandler({ onMapClick }) {
   return null;
 }
 
-export default function InteractiveMap() {
+export default function InteractiveMap({ onMarkerChange }) {
   const [markers, setMarkers] = useState([]);
   const [center] = useState([52.2297, 21.0122]); // Warszawa jako domyślny środek
   const [showAlert, setShowAlert] = useState(false);
@@ -32,11 +32,25 @@ export default function InteractiveMap() {
       lat: latlng.lat.toFixed(6),
       lng: latlng.lng.toFixed(6),
     };
-    setMarkers([...markers, newMarker]);
+    const updatedMarkers = [...markers, newMarker];
+    setMarkers(updatedMarkers);
+    // Pass the latest marker to parent
+    if (onMarkerChange) {
+      onMarkerChange(newMarker);
+    }
   };
 
   const removeMarker = (id) => {
-    setMarkers(markers.filter(marker => marker.id !== id));
+    const updatedMarkers = markers.filter(marker => marker.id !== id);
+    setMarkers(updatedMarkers);
+    // Update parent - set to null if no markers, otherwise set to the latest
+    if (onMarkerChange) {
+      if (updatedMarkers.length === 0) {
+        onMarkerChange(null);
+      } else {
+        onMarkerChange(updatedMarkers[updatedMarkers.length - 1]);
+      }
+    }
   };
 
 
@@ -44,9 +58,14 @@ export default function InteractiveMap() {
   useEffect(() => {
     if (markers.length > 1) {
       setShowAlert(true);
-      setMarkers([markers[markers.length - 1]]); 
+      const latestMarker = markers[markers.length - 1];
+      setMarkers([latestMarker]);
+      // Update parent with the latest marker
+      if (onMarkerChange) {
+        onMarkerChange(latestMarker);
+      }
     }
-  }, [markers]);
+  }, [markers, onMarkerChange]);
 
 
   return (

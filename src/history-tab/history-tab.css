@@ -22,13 +22,19 @@
 
 .history-table-element-date,
 .history-table-element-height,
-.history-table-element-factor,
-.history-table-element-safeDistance,
-.history-table-element-location
+.history-table-element-groundType,
+.history-table-element-location,
+.history-table-element-coordinates
  {
   font-size: 18px;
   padding: 5px;
   color: #333;
+}
+.history-table-element-safeDistance {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px;
+  color: #d61212;
 }
 .history-table-header {
   width: 100%;

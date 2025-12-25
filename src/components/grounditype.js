@@ -3,15 +3,15 @@ import './grounditype.css';
 
 
 
-export default function GroundTypeSelect({ onFactorChange }) {
+export default function GroundTypeSelect({ onFactorChange, onGroundTypeNameChange }) {
   const [selectedGroundType, setSelectedGroundType] = useState('');
 
   const groundTypes = [
-    { id: '1', name: 'Pasek suchy', value: 'piasek' , description: ' Luźny, sypki materiał. Ziarna widoczne gołym okiem (0,05-2 mm). Przesypuje się między palcami, nie da się uformować kulki. Brak wilgoci. Wykop trzyma się pionowo tylko na niewielką głębokość.', factor:'1.5'},
-    { id: '2', name: 'Grunty malospoiste', value: 'malospoiste', description:'Piaski wilgotne, piaski gliniaste, pyły. Ziarna słabo widoczne. Dają się uformować w kulkę, ale łatwo się rozpada. Niewielka przyczepność między ziarnami. Wykop wymaga lekkich podpór od ~1,5m głębokości.', factor:'1.25'},
-    { id: '3', name: 'Spękane skały', value: 'spękane skały', description:'Twarda skała z wyraźnymi szczelinami, pęknięciami lub warstwowaniem. Można odłamać kawałki dłutem lub łomem. Widoczne płaszczyzny podziału. Wykop stabilny, ale możliwe lokalne osunięcia wzdłuż szczelin.', factor:'1.0'},
-    { id: '4', name: 'Grunty spoiste, Gliny', value: 'spoiste gliny' , description:'Lepki, plastyczny materiał. Przywiera do narzędzi. Daje się uformować w walec. Wilgotny jest błyszczący, suchy twardy. Wykop dobrze trzyma ściany pionowe, nie wymaga podpór do znacznych głębokości.', factor:'0.5'},
-    { id: '5', name: 'Skały lite', value: 'lite skały', description:'Jednolita, zwarta skała bez wyraźnych pęknięć. Trudna do rozbicia nawet młotem pneumatycznym. Wymaga użycia materiałów wybuchowych lub ciężkiego sprzętu. Wykop całkowicie stabilny bez podpór.', factor:'0'},
+    { id: '1', name: 'kategoria I - Pasek suchy', value: 'piasek' , description: ' Luźny, sypki materiał. Ziarna widoczne gołym okiem (0,05-2 mm). Przesypuje się między palcami, nie da się uformować kulki. Brak wilgoci. Wykop trzyma się pionowo tylko na niewielką głębokość.', factor:'1.5'},
+    { id: '2', name: 'kategoria II - Grunty malospoiste', value: 'malospoiste', description:'Piaski wilgotne, piaski gliniaste, pyły. Ziarna słabo widoczne. Dają się uformować w kulkę, ale łatwo się rozpada. Niewielka przyczepność między ziarnami. Wykop wymaga lekkich podpór od ~1,5m głębokości.', factor:'1.25'},
+    { id: '3', name: 'kategoria III - Spękane skały', value: 'spękane skały', description:'Twarda skała z wyraźnymi szczelinami, pęknięciami lub warstwowaniem. Można odłamać kawałki dłutem lub łomem. Widoczne płaszczyzny podziału. Wykop stabilny, ale możliwe lokalne osunięcia wzdłuż szczelin.', factor:'1.0'},
+    { id: '4', name: 'kategoria IV - Grunty spoiste, Gliny', value: 'spoiste gliny' , description:'Lepki, plastyczny materiał. Przywiera do narzędzi. Daje się uformować w walec. Wilgotny jest błyszczący, suchy twardy. Wykop dobrze trzyma ściany pionowe, nie wymaga podpór do znacznych głębokości.', factor:'0.5'},
+    { id: '5', name: 'kategoria V - Skały lite', value: 'lite skały', description:'Jednolita, zwarta skała bez wyraźnych pęknięć. Trudna do rozbicia nawet młotem pneumatycznym. Wymaga użycia materiałów wybuchowych lub ciężkiego sprzętu. Wykop całkowicie stabilny bez podpór.', factor:'0'},
   ];
 
   useEffect(() => {
@@ -25,9 +25,13 @@ export default function GroundTypeSelect({ onFactorChange }) {
           console.log('Ściany pionowe');
           onFactorChange(['0']);
         }
+        // Pass the ground type name to parent
+        if (onGroundTypeNameChange) {
+          onGroundTypeNameChange(selectedType.name);
+        }
       }
     }
-  }, [selectedGroundType, onFactorChange]);
+  }, [selectedGroundType, onFactorChange, onGroundTypeNameChange]);
 
   return (
 
