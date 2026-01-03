@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import GroundTypeSelect from './components/grounditype';
 import Calculations from './components/calculations';
+import AnaliticsCalculations from './analitics-method/analitics-calculations';
+import './analitics-method/analitics-method.css';
 
 import { useNavigate } from 'react-router-dom';
 import InteractiveMap from './components/localisation-map';
@@ -18,6 +20,9 @@ function App() {
   const menuRef = useRef(null);
   const [showCalculationAlert, setShowCalculationAlert] = useState(false);
   const [showSaveAlert, setShowSaveAlert] = useState(false);
+  const [showLocationAlert, setShowLocationAlert] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState('współczynnikowo'); // 'współczynnikowo' or 'analiticznie'
+  const [isHeightUnknown, setIsHeightUnknown] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,8 +41,22 @@ function App() {
   }, [isMenuOpen]);
 
   const saveCalculation = () => {
-    if (!currentInputHeight || safeDistanceValue === 0) {
+    // For coefficient method, height is always required
+    // For analytical method, height is only required if isHeightUnknown is false
+    const heightRequired = selectedMethod === 'współczynnikowo' || !isHeightUnknown;
+    
+    if (heightRequired && !currentInputHeight) {
       setShowCalculationAlert(true);
+      return;
+    }
+
+    if (safeDistanceValue === 0) {
+      setShowCalculationAlert(true);
+      return;
+    }
+
+    if (!currentMarker) {
+      setShowLocationAlert(true);
       return;
     }
 
@@ -47,6 +66,8 @@ function App() {
       safeDistance: safeDistanceValue || 0,
       markerLat: currentMarker ? parseFloat(currentMarker.lat) : null,
       markerLng: currentMarker ? parseFloat(currentMarker.lng) : null,
+      method: selectedMethod,
+      isHeightUnknown: selectedMethod === 'analiticznie' ? isHeightUnknown : false,
       timestamp: new Date().toISOString()
     };
 
@@ -78,6 +99,13 @@ function App() {
           onClose={() => setShowSaveAlert(false)}
         />
       )}
+      {showLocationAlert && (
+        <CustomAlert
+          title="Błąd"
+          message="Proszę wybrać lokalizację na mapie przed zapisaniem obliczenia"
+          onClose={() => setShowLocationAlert(false)}
+        />
+      )}
       <header className="App-header">
         <div className="header-title-section">
           <h1 className="justify-center">Kalkulator klinu odłamu</h1>
@@ -104,45 +132,82 @@ function App() {
               >
                 Historia obliczeń
               </button>
-              <button 
-                className="menu-item" 
-                onClick={() => {
-                  navigate('/info-tab');
-                  setIsMenuOpen(false);
-                }}
-              >
-                Klin odłamu - informacje podstawowe
-              </button>
-              <button 
-                className="menu-item" 
-                onClick={() => {
-                  navigate('/analitics-method');
-                  setIsMenuOpen(false);
-                }}
-              >
-                Metoda analityczna liczenia klinu odłamu
-              </button>
             </div>
           )}
         </div>
-        <p className="ground-type-label">1. Kategoria  gruntu</p>
-       <div className="ground-type-select-section bg-orange-500 rounded-b-2xl shadow-2xl p-6 md:p-8 align-column">
-            <GroundTypeSelect 
-              onFactorChange={setFactorForCalculations} 
-              onGroundTypeNameChange={setSelectedGroundTypeName}
-            />
-
-       </div>
-       <p className="ground-type-label">2. Wysokość wykopu</p>
-       <div className="height-input-section">
-       <input className="height-input" id="height-input"/>
-       <button className="calculate-button" onClick={() => {
-         const inputHeight = document.getElementById('height-input').value;
-         setCurrentInputHeight(inputHeight);
-         const calculatedSafeDistance = Calculations(inputHeight, factorForCalculations);
-         setSafeDistanceValue(calculatedSafeDistance);
-       }}>Oblicz</button>
-       </div>
+        <button 
+          className='easier-way-button' 
+          onClick={() => setSelectedMethod('współczynnikowo')}
+        >
+          współczynnikowo
+        </button>
+        <button 
+          className='harder-way-button' 
+          onClick={() => setSelectedMethod('analiticznie')}
+        >
+          analiticznie
+        </button>
+        
+        {selectedMethod === 'współczynnikowo' ? (
+          <>
+            <p className="ground-type-label">1. Kategoria  gruntu</p>
+            <div className="ground-type-select-section bg-orange-500 rounded-b-2xl shadow-2xl p-6 md:p-8 align-column">
+              <GroundTypeSelect 
+                onFactorChange={setFactorForCalculations} 
+                onGroundTypeNameChange={setSelectedGroundTypeName}
+              />
+            </div>
+            <p className="ground-type-label">2. Wysokość wykopu</p>
+            <div className="height-input-section">
+              <input className="height-input" id="height-input"/>
+              <button className="calculate-button" onClick={() => {
+                const inputHeight = document.getElementById('height-input').value;
+                setCurrentInputHeight(inputHeight);
+                const calculatedSafeDistance = Calculations(inputHeight, factorForCalculations);
+                setSafeDistanceValue(calculatedSafeDistance);
+              }}>Oblicz</button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="analitics-method-content">
+              <h1 className='data-input-title'>Dane wejściowe</h1>
+              <div className="d-we-know-height">
+                <p>Czy znana jest wysokość wykopu?</p>
+                <input 
+                  type="radio" 
+                  id="safe-distance-input-analitics" 
+                  value="false" 
+                  checked={!isHeightUnknown}
+                  onClick={() => setIsHeightUnknown(!isHeightUnknown)}
+                  onChange={() => {}}
+                />
+              </div>
+              <p>Wysokość wykopu</p>
+              <input 
+                className='data-input-field' 
+                id="height-input-analitics" 
+                disabled={isHeightUnknown}
+              />
+              <p>Gęstość objętościowa gruntu - ρ [kN/m³]</p>
+              <input className='data-input-field' id="density-input-analitics"/>
+              <p>Kąt tarcia wewnętrznego - φ</p>
+              <input className='data-input-field' id="phi-input-analitics"/>
+              <p>Kochezja gruntu - c</p>
+              <input className='data-input-field' id="c-input-analitics"/>
+              <button className='calculate-button-analitics' onClick={() => {
+                const height = isHeightUnknown ? '' : document.getElementById('height-input-analitics').value;
+                const density = document.getElementById('density-input-analitics').value;
+                const phi = document.getElementById('phi-input-analitics').value;
+                const c = document.getElementById('c-input-analitics').value;
+                const result = AnaliticsCalculations(height, density, phi, c);
+                setSafeDistanceValue(result);
+                setCurrentInputHeight(height || '');
+                console.log(result);
+              }}>Oblicz</button>
+            </div>
+          </>
+        )}
        <div>
         <p className="ground-type-label">3. Lokalizacja</p>
         <InteractiveMap onMarkerChange={setCurrentMarker} />
