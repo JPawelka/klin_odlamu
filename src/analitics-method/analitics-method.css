@@ -1,0 +1,119 @@
+.App-header {
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+.header-title-section {
+  width: 100%;
+  background-color: rgb(110, 77, 59);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+}
+.back-button-section {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  padding: 10px 20px;
+}
+
+.back-button {
+  padding: 10px 30px;
+  font-size: 20px;
+  background-color: rgb(110, 77, 59);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.back-button:hover {
+  background-color: rgb(90, 60, 45);
+}
+
+.analitics-method-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.analitics-method-content {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.analitics-method-image {
+  width: 50%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: 400px;
+  flex-direction: column;
+}
+
+.analitics-method-image img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+.data-input-title {
+  font-size: 36px;
+  padding: 0px;
+  font-weight: bold;
+}
+.data-input-field {
+  width: 100%;
+  font-size: 28px;
+  padding: 15px;
+  box-sizing: border-box;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+}
+.calculate-button-analitics {
+  width: 100%;
+  font-size: 28px;
+  padding: 15px;
+  box-sizing: border-box;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #e5e7eb;
+  color: #000;
+  cursor: pointer;
+}
+.d-we-know-height {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  gap: 10px;
+  box-sizing: border-box;
+}
+.result-text {
+  font-size: 28px;
+  font-weight: bold;
+  padding: 15px;
+  box-sizing: border-box;
+  color: #fc0404;
+}
