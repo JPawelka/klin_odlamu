@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import HistoryTab from './history-tab/history-tab';
 import InfoTab from './info-tab/info-tab';
+import AnaliticsMethod from './analitics-method/analitics-method';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -15,6 +16,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/history-tab" element={<HistoryTab />} />
         <Route path="/info-tab" element={<InfoTab />} />
+        <Route path="/analitics-method" element={<AnaliticsMethod />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
