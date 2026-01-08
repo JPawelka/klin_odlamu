@@ -57,6 +57,9 @@ export default function HistoryTab() {
               safeDistance={calc.safeDistance}
               markerLat={calc.markerLat}
               markerLng={calc.markerLng}
+              method={calc.method}
+              isHeightUnknown={calc.isHeightUnknown}
+              calculationMode={calc.calculationMode}
               onDelete={handleDelete}
             />
           ))

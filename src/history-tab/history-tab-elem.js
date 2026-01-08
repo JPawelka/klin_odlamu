@@ -10,7 +10,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
 });
 
-export default function HistoryTabElem({ date, height, groundTypeName, safeDistance, markerLat, markerLng, onDelete, timestamp}) {
+export default function HistoryTabElem({ date, height, groundTypeName, safeDistance, markerLat, markerLng, onDelete, timestamp, method, isHeightUnknown, calculationMode}) {
   // Format location from lat/lng
   const formatLocation = (lat, lng) => {
     if (!lat || !lng) return 'Brak lokalizacji';
@@ -54,50 +54,72 @@ export default function HistoryTabElem({ date, height, groundTypeName, safeDista
   const hasLocation = markerLat && markerLng;
   const mapCenter = hasLocation ? [parseFloat(markerLat), parseFloat(markerLng)] : [52.2297, 21.0122];
 
+  const isAnalyticalMethod = method === 'analiticznie';
+  const isCriticalHeightMethod = method === 'analiticznie' && calculationMode === 'critical-height';
+  const shouldShowHeight = !isHeightUnknown;
+
   return (
     <div className="history-table-element">
         <div className="history-table-element-header">
-          Raport obliczeniowy
-          <div style={{ float: 'right', display: 'flex', gap: '8px' }}>
-            <button 
-              onClick={handlePrint}
-              style={{
-                backgroundColor: '#2196F3',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                padding: '6px 12px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#1976D2'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#2196F3'}
-            >
-              Drukuj
-            </button>
-            <button 
-              onClick={handleDelete}
-              style={{
-                backgroundColor: '#f44336',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                padding: '6px 12px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#d32f2f'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#f44336'}
-            >
-              Usuń
-            </button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span>Raport obliczeniowy</span>
+              {isCriticalHeightMethod && (
+                <span className="history-table-element-method-critical">
+                  Metoda: Wysokość krytyczna
+                </span>
+              )}
+              {isAnalyticalMethod && !isCriticalHeightMethod && (
+                <span className="history-table-element-method">
+                  Metoda: Analityczna
+                </span>
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button 
+                onClick={handlePrint}
+                style={{
+                  backgroundColor: '#2196F3',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '6px 12px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 'bold'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#1976D2'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#2196F3'}
+              >
+                Drukuj
+              </button>
+              <button 
+                onClick={handleDelete}
+                style={{
+                  backgroundColor: '#f44336',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '6px 12px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 'bold'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#d32f2f'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#f44336'}
+              >
+                Usuń
+              </button>
+            </div>
           </div>
         </div>
       <div className="history-table-element-date">Data wykonania obliczenia: {formatDate(date)}</div>
-      <div className="history-table-element-height">Wysokość wykopu: {height} metrów</div>
-      <div className="history-table-element-groundType">Rodzaj gruntu: {groundTypeName || 'Nie wybrano'}</div>
+      {shouldShowHeight && (
+        <div className="history-table-element-height">Wysokość wykopu: {height} metrów</div>
+      )}
+      {!isAnalyticalMethod && (
+        <div className="history-table-element-groundType">Rodzaj gruntu: {groundTypeName || 'Nie wybrano'}</div>
+      )}
       <div className="history-table-element-safeDistance">Bezpieczna odległość: {safeDistance} metrów</div>
       <div className="history-table-element-location">Lokalizacja: {formatLocation(markerLat, markerLng)}</div>
       {hasLocation && (

@@ -56,11 +56,53 @@
   box-sizing: border-box;
 }
 
+.height-input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.klin-odlamu-image {
+  width: 50%;
+  max-width: 900px;
+  height: auto;
+  object-fit: contain;
+  margin-left: 20px;
+}
+
+.klin-odlamu-image-analitics {
+  width: 50%;
+  max-width: 900px;
+  height: auto;
+  object-fit: contain;
+  align-self: flex-start;
+  margin-left: 20px;
+}
+
+.analitics-method-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 .height-input {
   width: 30%;
   font-size: 30px;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.height-input:disabled {
+  background-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .calculate-button {
