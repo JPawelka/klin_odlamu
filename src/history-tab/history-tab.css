@@ -63,6 +63,16 @@
   border-radius: 12px;
   display: inline-block;
 }
+
+.history-table-element-method-critical {
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #f44336;
+  padding: 4px 12px;
+  border-radius: 12px;
+  display: inline-block;
+}
 .back-button-section {
   width: 100%;
   display: flex;

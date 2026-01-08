@@ -10,7 +10,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
 });
 
-export default function HistoryTabElem({ date, height, groundTypeName, safeDistance, markerLat, markerLng, onDelete, timestamp, method, isHeightUnknown}) {
+export default function HistoryTabElem({ date, height, groundTypeName, safeDistance, markerLat, markerLng, onDelete, timestamp, method, isHeightUnknown, calculationMode}) {
   // Format location from lat/lng
   const formatLocation = (lat, lng) => {
     if (!lat || !lng) return 'Brak lokalizacji';
@@ -55,6 +55,7 @@ export default function HistoryTabElem({ date, height, groundTypeName, safeDista
   const mapCenter = hasLocation ? [parseFloat(markerLat), parseFloat(markerLng)] : [52.2297, 21.0122];
 
   const isAnalyticalMethod = method === 'analiticznie';
+  const isCriticalHeightMethod = method === 'analiticznie' && calculationMode === 'critical-height';
   const shouldShowHeight = !isHeightUnknown;
 
   return (
@@ -63,7 +64,12 @@ export default function HistoryTabElem({ date, height, groundTypeName, safeDista
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span>Raport obliczeniowy</span>
-              {isAnalyticalMethod && (
+              {isCriticalHeightMethod && (
+                <span className="history-table-element-method-critical">
+                  Metoda: Wysokość krytyczna
+                </span>
+              )}
+              {isAnalyticalMethod && !isCriticalHeightMethod && (
                 <span className="history-table-element-method">
                   Metoda: Analityczna
                 </span>

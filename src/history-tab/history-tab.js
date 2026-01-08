@@ -59,6 +59,7 @@ export default function HistoryTab() {
               markerLng={calc.markerLng}
               method={calc.method}
               isHeightUnknown={calc.isHeightUnknown}
+              calculationMode={calc.calculationMode}
               onDelete={handleDelete}
             />
           ))

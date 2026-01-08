@@ -90,6 +90,13 @@
   border: 2px solid #e5e7eb;
   border-radius: 8px;
 }
+
+.data-input-field:disabled {
+  background-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
 .calculate-button-analitics {
   width: 100%;
   font-size: 28px;
@@ -116,4 +123,18 @@
   padding: 15px;
   box-sizing: border-box;
   color: #fc0404;
+}
+
+.critical-height-banner {
+  width: 100%;
+  background-color: #dc2626;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  box-sizing: border-box;
+  margin: 10px 0;
+  display: block;
 }
