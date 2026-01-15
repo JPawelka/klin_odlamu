@@ -14,6 +14,7 @@ function App() {
   const [factorForCalculations, setFactorForCalculations] = useState([]);
   const navigate = useNavigate(); 
   const [safeDistanceValue, setSafeDistanceValue] = useState(0);
+  const [criticalHeightValue, setCriticalHeightValue] = useState(0);
   const [selectedGroundTypeName, setSelectedGroundTypeName] = useState('');
   const [currentMarker, setCurrentMarker] = useState(null);
   const [currentInputHeight, setCurrentInputHeight] = useState('');
@@ -44,8 +45,6 @@ function App() {
   }, [isMenuOpen]);
 
   const saveCalculation = () => {
-    // For coefficient method, height is always required
-    // For analytical method, height is only required if isHeightUnknown is false
     const heightRequired = selectedMethod === 'współczynnikowo' || !isHeightUnknown;
     
     if (heightRequired && !currentInputHeight) {
@@ -119,7 +118,7 @@ function App() {
       )}
       <header className="App-header">
         <div className="header-title-section">
-          <h1 className="justify-center">Kalkulator klinu odłamu</h1>
+          <h1 className="justify-center">Kalkulator poziomego zasięgu klinu odłamu</h1>
           <h2>Aplikacja dla operatorów maszyn budowlanych</h2>
         </div>
         <div className="hamburger-menu-container" ref={menuRef}>
@@ -146,11 +145,12 @@ function App() {
             </div>
           )}
         </div>
+        <p>Metoda:</p>
         <button 
           className='easier-way-button' 
           onClick={() => setSelectedMethod('współczynnikowo')}
         >
-          współczynnikowo
+          Metoda współczynnikowa - współczynniki
         </button>
         <button 
           className='harder-way-button' 
@@ -161,7 +161,7 @@ function App() {
             }
           }}
         >
-          analiticznie
+          Metody analityczne
         </button>
         
         {selectedMethod === 'współczynnikowo' ? (
@@ -176,15 +176,17 @@ function App() {
             <p className="ground-type-label">2. Wysokość wykopu</p>
             <div className="height-input-section">
               <div className="height-input-wrapper">
+                <p className="height-input-label">H = </p>
                 <input className="height-input" id="height-input"/>
                 <button className="calculate-button" onClick={() => {
                   const inputHeight = document.getElementById('height-input').value;
                   setCurrentInputHeight(inputHeight);
                   const calculatedSafeDistance = Calculations(inputHeight, factorForCalculations);
                   setSafeDistanceValue(calculatedSafeDistance);
+                  setCriticalHeightValue(0);
                 }}>Oblicz</button>
               </div>
-              <img src="/assets/klin-odlamu.png" alt="Klin odłamu" className="klin-odlamu-image" />
+              <img src="/assets/koparka-obraz.png" alt="Klin odłamu" className="klin-odlamu-image" />
             </div>
           </>
         ) : (
@@ -220,7 +222,7 @@ function App() {
                     <br /> ! C ≠ 0 !
                   </div>
                 )}
-                <p>Wysokość wykopu</p>
+                <p>Wysokość wykopu - H [m]</p>
                 <input 
                   className='data-input-field' 
                   id="height-input-analitics" 
@@ -232,9 +234,9 @@ function App() {
                   id="density-input-analitics"
                   disabled={calculationMode === 'analytics'}
                 />
-                <p>Kąt tarcia wewnętrznego - φ</p>
+                <p>Kąt tarcia wewnętrznego - φ [°]</p>
                 <input className='data-input-field' id="phi-input-analitics"/>
-                <p>Kochezja gruntu - c</p>
+                <p>Kochezja gruntu - c [kN/m²]</p>
                 <input 
                   className='data-input-field' 
                   id="c-input-analitics"
@@ -253,6 +255,7 @@ function App() {
                     
                     const result = CriticalHeightCalculations(density, phi, c);
                     setSafeDistanceValue(result.l);
+                    setCriticalHeightValue(result.hkr);
                     setCurrentInputHeight(result.hkr || '');
                     console.log('Critical height (Hkr):', result.hkr, 'Safe distance (L):', result.l);
                   } else {
@@ -262,12 +265,13 @@ function App() {
                     const c = document.getElementById('c-input-analitics').value;
                     const result = AnaliticsCalculations(height, density, phi, c);
                     setSafeDistanceValue(result);
+                    setCriticalHeightValue(0);
                     setCurrentInputHeight(height || '');
                     console.log('Analytics result:', result);
                   }
                 }}>Oblicz</button>
               </div>
-              <img src="/assets/klin-odlamu.png" alt="Klin odłamu" className="klin-odlamu-image-analitics" />
+              <img src="/assets/koparka-obraz.png" alt="Klin odłamu" className="klin-odlamu-image-analitics" />
             </div>
           </>
         )}
@@ -278,8 +282,14 @@ function App() {
        <div>
         <p className="ground-type-label">4. Wynik</p>
        </div>
-       <div className="safe-distance-label">Bezpieczna odległość dla twojej maszyny: <span className="safe-distance-value">{safeDistanceValue} metrów</span>
-       </div>
+       {calculationMode === 'critical-height' ? (
+         <>
+           <div className="safe-distance-label">Wysokość krytyczna (Hkr): <span className="safe-distance-value">{criticalHeightValue} metrów</span></div>
+           <div className="safe-distance-label">Bezpieczna odległość (L): <span className="safe-distance-value">{safeDistanceValue} metrów</span></div>
+         </>
+       ) : (
+         <div className="safe-distance-label">Bezpieczna odległość dla twojej maszyny od krawędzi wykopu: <span className="safe-distance-value">{safeDistanceValue} metrów</span></div>
+       )}
        <div className="save-button-section" style={{ marginTop: '20px', textAlign: 'center' }}>
          <button 
            className="save-button" 
