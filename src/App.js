@@ -259,14 +259,18 @@ function App() {
                     setCurrentInputHeight(result.hkr || '');
                     console.log('Critical height (Hkr):', result.hkr, 'Safe distance (L):', result.l);
                   } else {
-                    const height = document.getElementById('height-input-analitics').value;
-                    const density = document.getElementById('density-input-analitics').value;
-                    const phi = document.getElementById('phi-input-analitics').value;
-                    const c = document.getElementById('c-input-analitics').value;
-                    const result = AnaliticsCalculations(height, density, phi, c);
+                    const height = parseFloat(document.getElementById('height-input-analitics').value);
+                    const phi = parseFloat(document.getElementById('phi-input-analitics').value);
+                    
+                    if (!height || !phi) {
+                      setShowCalculationAlert(true);
+                      return;
+                    }
+                    
+                    const result = AnaliticsCalculations(height, phi);
                     setSafeDistanceValue(result);
                     setCriticalHeightValue(0);
-                    setCurrentInputHeight(height || '');
+                    setCurrentInputHeight(height.toString() || '');
                     console.log('Analytics result:', result);
                   }
                 }}>Oblicz</button>
