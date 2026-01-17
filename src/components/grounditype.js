@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './grounditype.css';
 import { groundTypes as groundTypesData } from '../utils/groundTypes';
 
 export default function GroundTypeSelect({ onFactorChange, onGroundTypeNameChange }) {
   const [selectedGroundType, setSelectedGroundType] = useState('');
 
-  const groundTypes = [
+  const groundTypes = useMemo(() => [
     { ...groundTypesData[0], factor: '1.5' },
     { ...groundTypesData[1], factor: '1.25' },
     { ...groundTypesData[2], factor: '1.0' },
     { ...groundTypesData[3], factor: '0.5' },
     { ...groundTypesData[4], factor: '0' },
-  ];
+  ], []);
 
   useEffect(() => {
     if (selectedGroundType) {
@@ -27,7 +27,7 @@ export default function GroundTypeSelect({ onFactorChange, onGroundTypeNameChang
         }
       }
     }
-  }, [selectedGroundType, onFactorChange, onGroundTypeNameChange]);
+  }, [selectedGroundType, onFactorChange, onGroundTypeNameChange, groundTypes]);
 
   return (
 

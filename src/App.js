@@ -25,7 +25,7 @@ function App() {
   const [showLocationAlert, setShowLocationAlert] = useState(false);
   const [showCZeroAlert, setShowCZeroAlert] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState('współczynnikowo'); // 'współczynnikowo' or 'analiticznie'
-  const [isHeightUnknown, setIsHeightUnknown] = useState(false);
+  const isHeightUnknown = false;
   const [calculationMode, setCalculationMode] = useState('normal'); // 'normal', 'critical-height', or 'analytics'
 
   useEffect(() => {
