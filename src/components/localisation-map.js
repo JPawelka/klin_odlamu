@@ -22,7 +22,7 @@ function MapClickHandler({ onMapClick }) {
 
 export default function InteractiveMap({ onMarkerChange }) {
   const [markers, setMarkers] = useState([]);
-  const [center] = useState([52.2297, 21.0122]); // Warszawa jako domyślny środek
+  const [center] = useState([52.2297, 21.0122]);
   const [showAlert, setShowAlert] = useState(false);
 
   const handleMapClick = (latlng) => {
@@ -34,7 +34,6 @@ export default function InteractiveMap({ onMarkerChange }) {
     };
     const updatedMarkers = [...markers, newMarker];
     setMarkers(updatedMarkers);
-    // Pass the latest marker to parent
     if (onMarkerChange) {
       onMarkerChange(newMarker);
     }
@@ -43,7 +42,6 @@ export default function InteractiveMap({ onMarkerChange }) {
   const removeMarker = (id) => {
     const updatedMarkers = markers.filter(marker => marker.id !== id);
     setMarkers(updatedMarkers);
-    // Update parent - set to null if no markers, otherwise set to the latest
     if (onMarkerChange) {
       if (updatedMarkers.length === 0) {
         onMarkerChange(null);
@@ -60,7 +58,6 @@ export default function InteractiveMap({ onMarkerChange }) {
       setShowAlert(true);
       const latestMarker = markers[markers.length - 1];
       setMarkers([latestMarker]);
-      // Update parent with the latest marker
       if (onMarkerChange) {
         onMarkerChange(latestMarker);
       }

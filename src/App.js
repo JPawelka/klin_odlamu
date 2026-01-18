@@ -24,9 +24,9 @@ function App() {
   const [showSaveAlert, setShowSaveAlert] = useState(false);
   const [showLocationAlert, setShowLocationAlert] = useState(false);
   const [showCZeroAlert, setShowCZeroAlert] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState('współczynnikowo'); // 'współczynnikowo' or 'analiticznie'
+  const [selectedMethod, setSelectedMethod] = useState('współczynnikowo');
   const isHeightUnknown = false;
-  const [calculationMode, setCalculationMode] = useState('normal'); // 'normal', 'critical-height', or 'analytics'
+  const [calculationMode, setCalculationMode] = useState('normal');
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -119,7 +119,7 @@ function App() {
       <header className="App-header">
         <div className="header-title-section">
           <h1 className="justify-center">Kalkulator poziomego zasięgu klinu odłamu</h1>
-          <h2>Aplikacja dla operatorów maszyn budowlanych</h2>
+          <h2>Aplikacja dla operatorów maszyn budowlanych, autor: Juliusz Pawelka</h2>
         </div>
         <div className="hamburger-menu-container" ref={menuRef}>
           <button 

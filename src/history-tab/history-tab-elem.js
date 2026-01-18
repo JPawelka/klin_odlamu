@@ -2,7 +2,6 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Fix for default marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
@@ -11,11 +10,9 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function HistoryTabElem({ date, height, groundTypeName, safeDistance, markerLat, markerLng, onDelete, timestamp, method, isHeightUnknown, calculationMode}) {
-  // Format location from lat/lng
   const formatLocation = (lat, lng) => {
     if (!lat || !lng) return 'Brak lokalizacji';
     
-    // Convert to degrees, minutes, seconds format
     const formatCoordinate = (coord, isLat) => {
       const abs = Math.abs(coord);
       const degrees = Math.floor(abs);
@@ -28,7 +25,6 @@ export default function HistoryTabElem({ date, height, groundTypeName, safeDista
     return `${formatCoordinate(parseFloat(lat), true)} ${formatCoordinate(parseFloat(lng), false)}`;
   };
 
-  // Format date from ISO string
   const formatDate = (isoString) => {
     if (!isoString) return 'Brak daty';
     const date = new Date(isoString);

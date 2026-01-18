@@ -8,9 +8,7 @@ export default function HistoryTab() {
     const [calculations, setCalculations] = useState([]);
 
     const loadCalculations = () => {
-      // Load calculations from localStorage
       const savedCalculations = JSON.parse(localStorage.getItem('calculations') || '[]');
-      // Sort by timestamp, newest first
       const sortedCalculations = savedCalculations.sort((a, b) => {
         return new Date(b.timestamp) - new Date(a.timestamp);
       });
